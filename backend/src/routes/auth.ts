@@ -20,7 +20,9 @@ router.post(
 		if (!error.isEmpty()) {
 			return res.status(400).json({ message: error.array() });
 		}
+
 		const { email, password } = req.body;
+		console.log(email, "email of user");
 		try {
 			// Check if user exists
 			// Check if password is correct
@@ -42,6 +44,7 @@ router.post(
 					expiresIn: "1d",
 				}
 			);
+			
 			res.cookie("auth_token", token, {
 				httpOnly: true,
 				secure: process.env.NODE_ENV === "production",
