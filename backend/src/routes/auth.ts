@@ -3,6 +3,7 @@ import { check, validationResult } from "express-validator";
 import User from "../models/user";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import varifyToken from "../middleware/auth";
 
 const router = express.Router();
 
@@ -44,7 +45,7 @@ router.post(
 					expiresIn: "1d",
 				}
 			);
-			
+
 			res.cookie("auth_token", token, {
 				httpOnly: true,
 				secure: process.env.NODE_ENV === "production",
@@ -57,5 +58,9 @@ router.post(
 		}
 	}
 );
+
+router.get("/validate-token", varifyToken, (req: Request, res: Response) => {
+	res.status(200).json({ userId: req.userId });
+});
 
 export default router;
